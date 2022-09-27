@@ -1,32 +1,31 @@
 class TodosController < ApplicationController
-  before_action :set_todo, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
+  before_action :set_goal
+  before_action :set_todo, only: [:show, :edit, :update, :destroy, :sort]
 
-  # GET /todos
-  def index
-    @todos = Todo.all
-  end
 
-  # GET /todos/1
-  def show
-  end
+
 
   # GET /todos/new
   def new
-    @todo = Todo.new
+     @todo = @goal.todos.new
   end
 
   # GET /todos/1/edit
   def edit
   end
+  
+  def sort
+  end
 
   # POST /todos
   def create
-    @todo = Todo.new(todo_params)
+     @todo = @goal.todos.new(todo_params)
 
     if @todo.save
-      redirect_to @todo, notice: 'Todo was successfully created.'
+        @status = true
     else
-      render :new
+      @status = false
     end
   end
 
@@ -51,7 +50,7 @@ class TodosController < ApplicationController
       @todo = Todo.find(params[:id])
     end
 
-    # Only allow a trusted parameter "white list" through.
+    
     def todo_params
       params.require(:todo).permit(:content, :goal_id, :position, :done)
     end
