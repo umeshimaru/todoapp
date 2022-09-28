@@ -41,13 +41,16 @@ class TodosController < ApplicationController
   # DELETE /todos/1
   def destroy
     @todo.destroy
-    redirect_to todos_url, notice: 'Todo was successfully destroyed.'
+    
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+    def set_goal
+   @goal = current_user.goals.find_by(id: params[:goal_id])
+    redirect_to(goals_url, alert: "ERROR!!") if @goal.blank?
+  end
     def set_todo
-      @todo = Todo.find(params[:id])
+       @todo = @goal.todos.find_by(id: params[:id])
     end
 
     
