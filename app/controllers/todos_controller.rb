@@ -32,9 +32,9 @@ class TodosController < ApplicationController
   # PATCH/PUT /todos/1
   def update
     if @todo.update(todo_params)
-      redirect_to @todo, notice: 'Todo was successfully updated.'
+        @status = true
     else
-      render :edit
+      @status = false
     end
   end
 
